@@ -1,0 +1,105 @@
+version: '3.4'
+
+services:
+  elasticsearch:
+    build:
+      context: elasticsearch/
+    volumes:
+      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+      ELASTIC_PASSWORD: changeme
+    networks:
+      - elk
+
+  filebeat:
+    build:
+      context: filebeat/
+    volumes:
+      - ./filebeat/config/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      #- ./filebeat/config/modules.yml:/usr/share/filebeat/modules.d/postgresql.yml:ro
+      - /tmp/elk-example.log:/tmp/elk-example.log:ro
+      - /tmp/pg.log:/tmp/pg.log:ro
+    environment:
+      LS_JAVA_OPTS: "-Xmx128m -Xms128m"
+    networks:
+      - elk
+
+  logstash-mutator:
+    build:
+      context: logstash-mutator/
+    volumes:
+      - ./logstash-mutator/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+      - ./logstash-mutator/pipeline:/usr/share/logstash/pipeline:ro
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    networks:
+      - elk
+    depends_on:
+      - filebeat
+    ports:
+      - "5044:5044"
+
+  logstash-transporter:
+    build:
+      context: logstash-transporter/
+    volumes:
+      - ./logstash-transporter/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+      - ./logstash-transporter/pipeline:/usr/share/logstash/pipeline:ro
+
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    networks:
+      - elk
+    depends_on:
+      - elasticsearch
+
+  kafka:
+    image: wurstmeister/kafka
+    depends_on:
+      - zoo
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ADVERTISED_PORT: 9092
+      KAFKA_LOG_RETENTION_HOURS: "168"
+      KAFKA_LOG_RETENTION_BYTES: "100000000"
+      KAFKA_ZOOKEEPER_CONNECT: zoo:2181
+      KAFKA_CREATE_TOPICS: "logstopic1:1:1"
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'false'
+      KAFKA_LISTENERS: PLAINTEXT://:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+    networks:
+      - elk
+
+  zoo:
+    image: elevy/zookeeper:latest
+    environment:
+      MYID: 1
+      SERVERS: zoo
+    ports:
+      - "2181:2181"
+    networks:
+      - elk
+
+  kibana:
+    build:
+      context: kibana/
+    volumes:
+      - ./kibana/config/:/usr/share/kibana/config:ro
+    ports:
+      - "5601:5601"
+    networks:
+      - elk
+    depends_on:
+      - elasticsearch
+
+networks:
+
+  elk:
+    driver: bridge

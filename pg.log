@@ -1,0 +1,1236 @@
+WARNING: enabling "trust" authentication for local connections
+You can change this by editing pg_hba.conf or using the option -A, or
+--auth-local and --auth-host, the next time you run initdb.
+****************************************************
+WARNING: No password has been set for the database.
+         This will allow anyone with access to the
+         Postgres port to access your database. In
+         Docker's default configuration, this is
+         effectively any other container on the same
+         system.
+
+         Use "-e POSTGRES_PASSWORD=password" to set
+         it in "docker run".
+****************************************************
+LOG:  database system was shut down at 2018-04-25 13:59:06 UTC
+LOG:  MultiXact member wraparound protections are now enabled
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+ERROR:  pgbench table "pgbench_branches" does not exist!
+STATEMENT:  DO $$
+	      DECLARE
+	        pgbench_tables CONSTANT text[] := '{ "pgbench_branches", "pgbench_tellers", "pgbench_accounts", "pgbench_history" }';
+	        tbl text;
+	      BEGIN
+	        FOREACH tbl IN ARRAY pgbench_tables LOOP
+	          IF NOT EXISTS (
+	            SELECT 1
+	            FROM pg_catalog.pg_class c
+	            JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+	            WHERE n.nspname = 'public'
+	            AND c.relname = tbl
+	            AND c.relkind = 'r'
+	          ) THEN 
+	            RAISE EXCEPTION 'pgbench table "%" does not exist!', tbl;
+	          END IF;
+	        END LOOP;
+	      END 
+	    $$;
+LOG:  duration: 4073.668 ms  statement: copy pgbench_accounts from stdin
+LOG:  duration: 2722.084 ms  statement: vacuum analyze pgbench_accounts
+LOG:  duration: 4074.994 ms  statement: alter table pgbench_accounts add primary key (aid)
+LOG:  duration: 1133.510 ms  statement: alter table pgbench_accounts add foreign key (bid) references pgbench_branches
+LOG:  duration: 1117.923 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '3945', $2 = '32'
+LOG:  duration: 1010.513 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '1552', $2 = '36'
+ERROR:  no unpinned buffers available
+CONTEXT:  SQL statement "SELECT 1 FROM ONLY "public"."pgbench_tellers" x WHERE "tid" OPERATOR(pg_catalog.=) $1 FOR KEY SHARE OF x"
+STATEMENT:  INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+ERROR:  no unpinned buffers available
+CONTEXT:  SQL statement "SELECT 1 FROM ONLY "public"."pgbench_branches" x WHERE "bid" OPERATOR(pg_catalog.=) $1 FOR KEY SHARE OF x"
+STATEMENT:  INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+ERROR:  no unpinned buffers available
+CONTEXT:  SQL statement "SELECT 1 FROM ONLY "public"."pgbench_accounts" x WHERE "aid" OPERATOR(pg_catalog.=) $1 FOR KEY SHARE OF x"
+STATEMENT:  INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+ERROR:  no unpinned buffers available
+STATEMENT:  UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+ERROR:  no unpinned buffers available
+STATEMENT:  INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+ERROR:  no unpinned buffers available
+STATEMENT:  UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+ERROR:  no unpinned buffers available
+STATEMENT:  UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+ERROR:  no unpinned buffers available
+STATEMENT:  UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+ERROR:  no unpinned buffers available
+STATEMENT:  SELECT abalance FROM pgbench_accounts WHERE aid = $1;
+ERROR:  no unpinned buffers available
+STATEMENT:  UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+LOG:  duration: 1319.002 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '3654', $2 = '31'
+LOG:  duration: 1101.934 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-178', $2 = '13'
+LOG:  duration: 1104.358 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '4379', $2 = '13'
+ERROR:  no unpinned buffers available
+STATEMENT:  UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+ERROR:  no unpinned buffers available
+STATEMENT:  INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+ERROR:  no unpinned buffers available
+STATEMENT:  UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+ERROR:  no unpinned buffers available
+STATEMENT:  SELECT abalance FROM pgbench_accounts WHERE aid = $1;
+LOG:  duration: 1138.413 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-4372', $2 = '13'
+LOG:  duration: 1159.490 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-1576', $2 = '29'
+LOG:  duration: 1384.474 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '3821', $2 = '13'
+LOG:  duration: 1238.166 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '4232', $2 = '344'
+LOG:  duration: 1167.623 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-1242', $2 = '344'
+LOG:  duration: 1004.247 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-1833', $2 = '344'
+LOG:  duration: 1036.025 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-1792', $2 = '344'
+LOG:  duration: 1456.008 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '223', $2 = '33', $3 = '1007025', $4 = '1371'
+LOG:  duration: 1369.583 ms  statement: END;
+LOG:  duration: 1403.866 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '2527', $2 = '1238573'
+LOG:  duration: 1363.793 ms  statement: SELECT abalance FROM pgbench_accounts WHERE aid = $1;
+DETAIL:  parameters: $1 = '1963397'
+LOG:  duration: 1460.312 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '-3528', $2 = '2970670'
+LOG:  duration: 1363.715 ms  statement: SELECT abalance FROM pgbench_accounts WHERE aid = $1;
+DETAIL:  parameters: $1 = '695887'
+LOG:  duration: 1368.631 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '210', $2 = '29', $3 = '3286981', $4 = '1374'
+LOG:  duration: 1369.223 ms  statement: END;
+LOG:  duration: 1364.684 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '182', $2 = '1', $3 = '278380', $4 = '-578'
+LOG:  duration: 1369.763 ms  statement: END;
+LOG:  duration: 1570.890 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '1055', $2 = '392'
+LOG:  duration: 1372.321 ms  statement: END;
+LOG:  duration: 1368.750 ms  statement: END;
+LOG:  duration: 1369.739 ms  statement: END;
+LOG:  duration: 1486.165 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '261', $2 = '31', $3 = '3622006', $4 = '-171'
+LOG:  duration: 1477.150 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-3631', $2 = '36'
+LOG:  duration: 1463.432 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '394', $2 = '9', $3 = '1839793', $4 = '50'
+LOG:  duration: 1477.252 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '280', $2 = '30', $3 = '404723', $4 = '-1168'
+LOG:  duration: 1465.799 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '-1557', $2 = '985303'
+LOG:  duration: 1370.934 ms  statement: END;
+LOG:  duration: 1409.152 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '159', $2 = '18', $3 = '441823', $4 = '-3080'
+LOG:  duration: 1580.802 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-4360', $2 = '29'
+LOG:  duration: 1374.930 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '-1085', $2 = '1613115'
+LOG:  duration: 1374.272 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '4258', $2 = '3970223'
+LOG:  duration: 1666.360 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-2761', $2 = '28'
+LOG:  duration: 1378.290 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '395', $2 = '22', $3 = '2409509', $4 = '-617'
+LOG:  duration: 1754.958 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '2382', $2 = '32'
+LOG:  duration: 1668.934 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '679', $2 = '127'
+LOG:  duration: 1509.084 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '839', $2 = '34'
+LOG:  duration: 1473.114 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-3872', $2 = '22'
+LOG:  duration: 1595.203 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '4183', $2 = '122'
+LOG:  duration: 1378.941 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '-3761', $2 = '3963682'
+LOG:  duration: 1471.421 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '227', $2 = '27', $3 = '3622969', $4 = '-571'
+LOG:  duration: 1501.069 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-372', $2 = '6'
+LOG:  duration: 1523.350 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-2498', $2 = '19'
+LOG:  duration: 1472.312 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '176', $2 = '40', $3 = '2349077', $4 = '2709'
+LOG:  duration: 1477.609 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '-3891', $2 = '3087669'
+LOG:  duration: 1621.591 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-1731', $2 = '15'
+LOG:  duration: 1502.898 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '2186', $2 = '395'
+LOG:  duration: 1479.735 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-953', $2 = '394'
+LOG:  duration: 1475.058 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '131', $2 = '24', $3 = '834858', $4 = '4063'
+LOG:  duration: 1493.841 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-3983', $2 = '176'
+LOG:  duration: 1700.087 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-2685', $2 = '40'
+LOG:  duration: 1389.292 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '64', $2 = '27'
+LOG:  duration: 1506.022 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '2013', $2 = '30'
+LOG:  duration: 1490.925 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '294', $2 = '31'
+LOG:  duration: 1539.203 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-3605', $2 = '6'
+LOG:  duration: 1393.593 ms  statement: END;
+LOG:  duration: 1491.052 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-4529', $2 = '303'
+LOG:  duration: 1555.505 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-546', $2 = '28'
+LOG:  duration: 1515.190 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '4974', $2 = '32'
+LOG:  duration: 1394.667 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-3044', $2 = '348'
+LOG:  duration: 1754.365 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '4738', $2 = '29'
+LOG:  duration: 1512.996 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-4349', $2 = '19'
+LOG:  duration: 1516.515 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '4290', $2 = '200'
+LOG:  duration: 1517.808 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-1501', $2 = '30'
+LOG:  duration: 1496.136 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-515', $2 = '36'
+LOG:  duration: 1497.747 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '278', $2 = '2727170'
+LOG:  duration: 1546.488 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '3665', $2 = '24'
+LOG:  duration: 1636.210 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-4197', $2 = '28'
+LOG:  duration: 1441.737 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '-2563', $2 = '845263'
+LOG:  duration: 1498.065 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-2687', $2 = '9'
+LOG:  duration: 1405.472 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '139', $2 = '3', $3 = '2912952', $4 = '-3381'
+LOG:  duration: 1493.635 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '274', $2 = '26', $3 = '1921092', $4 = '-3823'
+LOG:  duration: 1505.439 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-719', $2 = '31'
+LOG:  duration: 1553.615 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '4853', $2 = '25'
+LOG:  duration: 1500.307 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-2209', $2 = '22'
+LOG:  duration: 1608.219 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-4732', $2 = '19'
+LOG:  duration: 1413.515 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '4803', $2 = '40'
+LOG:  duration: 1411.766 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '1935', $2 = '1436895'
+LOG:  duration: 1704.108 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-873', $2 = '221'
+LOG:  duration: 1610.684 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-1030', $2 = '111'
+LOG:  duration: 1414.588 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '3426', $2 = '6'
+LOG:  duration: 1506.638 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '472', $2 = '17'
+LOG:  duration: 1545.248 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '4332', $2 = '334'
+LOG:  duration: 1631.817 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '2712', $2 = '6'
+LOG:  duration: 1416.405 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '3453', $2 = '290'
+LOG:  duration: 1509.132 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '268', $2 = '5', $3 = '1037628', $4 = '2103'
+LOG:  duration: 1418.707 ms  statement: END;
+LOG:  duration: 1523.594 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-4694', $2 = '36'
+LOG:  duration: 1622.140 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-13', $2 = '208'
+LOG:  duration: 1423.817 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '1587', $2 = '2128678'
+LOG:  duration: 1520.848 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '1088', $2 = '2709576'
+LOG:  duration: 1519.718 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '136', $2 = '23', $3 = '3437184', $4 = '-718'
+LOG:  duration: 1554.125 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '1624', $2 = '19'
+LOG:  duration: 1437.986 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '2337', $2 = '268'
+LOG:  duration: 1691.771 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '193', $2 = '32'
+LOG:  duration: 1536.365 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '1009', $2 = '115'
+LOG:  duration: 1528.451 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '288', $2 = '2', $3 = '1344316', $4 = '4685'
+LOG:  duration: 1671.934 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-838', $2 = '5'
+LOG:  duration: 1663.923 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '2166', $2 = '25'
+LOG:  duration: 1826.987 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '3921', $2 = '75'
+LOG:  duration: 1661.264 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-320', $2 = '22'
+LOG:  duration: 1469.809 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-1020', $2 = '21'
+LOG:  duration: 1597.467 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-1043', $2 = '40'
+LOG:  duration: 1636.987 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '2730', $2 = '2'
+LOG:  duration: 1580.872 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '1592', $2 = '6'
+LOG:  duration: 1488.839 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '4415', $2 = '9'
+LOG:  duration: 1693.282 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-3966', $2 = '334'
+LOG:  duration: 1618.450 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-4301', $2 = '15'
+LOG:  duration: 1791.440 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-4950', $2 = '40'
+LOG:  duration: 1722.370 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '4623', $2 = '2'
+LOG:  duration: 1615.962 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '323', $2 = '30'
+LOG:  duration: 1644.944 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '513', $2 = '28'
+LOG:  duration: 1651.090 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '3452', $2 = '15'
+LOG:  duration: 1620.627 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-368', $2 = '32'
+LOG:  duration: 1730.145 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '940', $2 = '153'
+LOG:  duration: 1700.686 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-3979', $2 = '6'
+LOG:  duration: 1682.669 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '3652', $2 = '15'
+LOG:  duration: 1660.777 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-298', $2 = '6'
+LOG:  duration: 1681.383 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '731', $2 = '15'
+LOG:  duration: 1748.902 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-3047', $2 = '5'
+LOG:  duration: 1839.573 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-2218', $2 = '5'
+LOG:  duration: 1585.162 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-2774', $2 = '15'
+LOG:  duration: 1776.593 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-2701', $2 = '174'
+LOG:  duration: 1858.475 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '3370', $2 = '5'
+LOG:  duration: 2200.394 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '3230', $2 = '122'
+LOG:  duration: 1603.664 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-2184', $2 = '5'
+LOG:  duration: 1712.978 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-4917', $2 = '341'
+LOG:  duration: 1706.004 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-824', $2 = '122'
+LOG:  duration: 1729.627 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '3940', $2 = '15'
+LOG:  duration: 2284.098 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '2210', $2 = '122'
+LOG:  duration: 1776.582 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '3569', $2 = '15'
+LOG:  duration: 1789.890 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '2396', $2 = '19'
+LOG:  duration: 1771.530 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '3145', $2 = '204'
+LOG:  duration: 1887.178 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-2649', $2 = '6'
+LOG:  duration: 1833.616 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '1598', $2 = '40'
+LOG:  duration: 2055.682 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '3434', $2 = '19'
+LOG:  duration: 2113.542 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-800', $2 = '19'
+LOG:  duration: 2106.173 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-3476', $2 = '302'
+ERROR:  no unpinned buffers available
+STATEMENT:  UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+ERROR:  no unpinned buffers available
+STATEMENT:  UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+ERROR:  no unpinned buffers available
+CONTEXT:  SQL statement "SELECT 1 FROM ONLY "public"."pgbench_tellers" x WHERE "tid" OPERATOR(pg_catalog.=) $1 FOR KEY SHARE OF x"
+STATEMENT:  INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+ERROR:  no unpinned buffers available
+STATEMENT:  UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+ERROR:  no unpinned buffers available
+CONTEXT:  SQL statement "SELECT 1 FROM ONLY "public"."pgbench_branches" x WHERE "bid" OPERATOR(pg_catalog.=) $1 FOR KEY SHARE OF x"
+STATEMENT:  INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+ERROR:  no unpinned buffers available
+STATEMENT:  UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+ERROR:  no unpinned buffers available
+STATEMENT:  INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+ERROR:  no unpinned buffers available
+STATEMENT:  INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+ERROR:  no unpinned buffers available
+STATEMENT:  UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+ERROR:  no unpinned buffers available
+STATEMENT:  UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+ERROR:  no unpinned buffers available
+CONTEXT:  SQL statement "SELECT 1 FROM ONLY "public"."pgbench_branches" x WHERE "bid" OPERATOR(pg_catalog.=) $1 FOR KEY SHARE OF x"
+STATEMENT:  INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+ERROR:  no unpinned buffers available
+STATEMENT:  SELECT abalance FROM pgbench_accounts WHERE aid = $1;
+ERROR:  no unpinned buffers available
+CONTEXT:  SQL statement "SELECT 1 FROM ONLY "public"."pgbench_branches" x WHERE "bid" OPERATOR(pg_catalog.=) $1 FOR KEY SHARE OF x"
+STATEMENT:  INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+ERROR:  no unpinned buffers available
+STATEMENT:  UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+ERROR:  no unpinned buffers available
+STATEMENT:  INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+ERROR:  no unpinned buffers available
+STATEMENT:  SELECT abalance FROM pgbench_accounts WHERE aid = $1;
+ERROR:  no unpinned buffers available
+STATEMENT:  UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+ERROR:  no unpinned buffers available
+STATEMENT:  INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+ERROR:  no unpinned buffers available
+STATEMENT:  UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+ERROR:  no unpinned buffers available
+CONTEXT:  SQL statement "SELECT 1 FROM ONLY "public"."pgbench_tellers" x WHERE "tid" OPERATOR(pg_catalog.=) $1 FOR KEY SHARE OF x"
+STATEMENT:  INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+ERROR:  no unpinned buffers available
+STATEMENT:  UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+ERROR:  no unpinned buffers available
+STATEMENT:  INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+ERROR:  no unpinned buffers available
+STATEMENT:  UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+ERROR:  no unpinned buffers available
+CONTEXT:  SQL statement "SELECT 1 FROM ONLY "public"."pgbench_branches" x WHERE "bid" OPERATOR(pg_catalog.=) $1 FOR KEY SHARE OF x"
+STATEMENT:  INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+ERROR:  no unpinned buffers available
+STATEMENT:  SELECT abalance FROM pgbench_accounts WHERE aid = $1;
+LOG:  duration: 1629.635 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '2032', $2 = '2554415'
+LOG:  duration: 1607.292 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '185', $2 = '11', $3 = '1014111', $4 = '1686'
+LOG:  duration: 1607.834 ms  statement: SELECT abalance FROM pgbench_accounts WHERE aid = $1;
+DETAIL:  parameters: $1 = '3706378'
+LOG:  duration: 1607.899 ms  statement: END;
+LOG:  duration: 1609.842 ms  statement: END;
+LOG:  duration: 1633.137 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-1037', $2 = '27'
+LOG:  duration: 1610.260 ms  statement: END;
+LOG:  duration: 1630.032 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '-3163', $2 = '3658880'
+LOG:  duration: 1613.249 ms  statement: END;
+LOG:  duration: 1617.566 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '4373', $2 = '259022'
+LOG:  duration: 1615.032 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '2514', $2 = '1594085'
+LOG:  duration: 1626.043 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '2020', $2 = '31'
+LOG:  duration: 1649.729 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '4477', $2 = '7'
+LOG:  duration: 1611.108 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '31', $2 = '4', $3 = '2933349', $4 = '4220'
+LOG:  duration: 1633.807 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '347', $2 = '17', $3 = '2868171', $4 = '-2896'
+LOG:  duration: 1612.831 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '71', $2 = '30', $3 = '1438146', $4 = '1286'
+LOG:  duration: 1625.647 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '132', $2 = '10', $3 = '1409870', $4 = '-610'
+LOG:  duration: 1616.273 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '2576', $2 = '2687323'
+LOG:  duration: 1659.718 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '490', $2 = '11'
+LOG:  duration: 1613.239 ms  statement: END;
+LOG:  duration: 1645.874 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '367', $2 = '3556102'
+LOG:  duration: 1615.639 ms  statement: END;
+LOG:  duration: 1627.955 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '1972', $2 = '2885184'
+LOG:  duration: 1632.352 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '376', $2 = '19', $3 = '2583422', $4 = '4851'
+LOG:  duration: 1639.166 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '123', $2 = '14', $3 = '271919', $4 = '-4684'
+LOG:  duration: 1637.054 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '174', $2 = '22', $3 = '2310013', $4 = '-2978'
+LOG:  duration: 1731.175 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-2479', $2 = '30'
+LOG:  duration: 1628.809 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '-2317', $2 = '3881543'
+LOG:  duration: 1618.239 ms  statement: END;
+LOG:  duration: 1606.671 ms  statement: SELECT abalance FROM pgbench_accounts WHERE aid = $1;
+DETAIL:  parameters: $1 = '1110684'
+LOG:  duration: 1628.088 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '4391', $2 = '2419759'
+LOG:  duration: 1637.042 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '3496', $2 = '3206249'
+LOG:  duration: 1672.842 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '589', $2 = '11'
+LOG:  duration: 1629.073 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '830', $2 = '2015687'
+LOG:  duration: 1620.763 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '4023', $2 = '1626580'
+LOG:  duration: 1654.500 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-4396', $2 = '66'
+LOG:  duration: 1620.641 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '1498', $2 = '333596'
+LOG:  duration: 1620.445 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '1686', $2 = '278'
+LOG:  duration: 1637.410 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-3932', $2 = '7'
+LOG:  duration: 1618.837 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '364', $2 = '23', $3 = '486286', $4 = '-264'
+LOG:  duration: 1645.665 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '845', $2 = '10'
+LOG:  duration: 1626.448 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '4714', $2 = '899705'
+LOG:  duration: 1619.897 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-1950', $2 = '31'
+LOG:  duration: 1633.249 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '408', $2 = '2792007'
+LOG:  duration: 1720.129 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '4611', $2 = '17'
+LOG:  duration: 1643.927 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '214', $2 = '9', $3 = '172790', $4 = '2138'
+LOG:  duration: 1636.808 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '2511', $2 = '27'
+LOG:  duration: 1651.182 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-211', $2 = '9'
+LOG:  duration: 1622.322 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '1916', $2 = '240'
+LOG:  duration: 1623.198 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '158', $2 = '26', $3 = '2635537', $4 = '4345'
+LOG:  duration: 1787.928 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '3922', $2 = '11'
+LOG:  duration: 1637.236 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '2444', $2 = '364'
+LOG:  duration: 1621.574 ms  statement: SELECT abalance FROM pgbench_accounts WHERE aid = $1;
+DETAIL:  parameters: $1 = '1640370'
+LOG:  duration: 1645.196 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '4263', $2 = '11'
+LOG:  duration: 1654.609 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '394', $2 = '390'
+LOG:  duration: 1641.264 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '128', $2 = '21', $3 = '1061392', $4 = '166'
+LOG:  duration: 1629.264 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-2907', $2 = '173'
+LOG:  duration: 1628.654 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '68', $2 = '12', $3 = '3305646', $4 = '-2467'
+LOG:  duration: 1652.722 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '63', $2 = '5', $3 = '3525730', $4 = '-4868'
+LOG:  duration: 1638.864 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '-3340', $2 = '208955'
+LOG:  duration: 1650.529 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-3919', $2 = '6'
+LOG:  duration: 1627.513 ms  statement: SELECT abalance FROM pgbench_accounts WHERE aid = $1;
+DETAIL:  parameters: $1 = '3774917'
+LOG:  duration: 1642.717 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '-1029', $2 = '1572314'
+LOG:  duration: 1689.696 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '318', $2 = '1552405'
+LOG:  duration: 1697.515 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '3019', $2 = '22'
+LOG:  duration: 1731.860 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '2368', $2 = '5'
+LOG:  duration: 1701.149 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '4344', $2 = '2067024'
+LOG:  duration: 1657.541 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-3586', $2 = '234'
+LOG:  duration: 1662.392 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-41', $2 = '22'
+LOG:  duration: 1671.138 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-2513', $2 = '168'
+LOG:  duration: 1647.271 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '318', $2 = '15', $3 = '1716483', $4 = '-3314'
+LOG:  duration: 1664.110 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '4181', $2 = '5'
+LOG:  duration: 1690.105 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '253', $2 = '3', $3 = '1245597', $4 = '211'
+LOG:  duration: 1646.161 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '2649', $2 = '27'
+LOG:  duration: 1680.540 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '2501', $2 = '22'
+LOG:  duration: 1702.622 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '3676', $2 = '14'
+LOG:  duration: 1650.203 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '-4526', $2 = '386333'
+LOG:  duration: 1638.702 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '1593', $2 = '13'
+LOG:  duration: 1661.868 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '251', $2 = '38', $3 = '3681809', $4 = '-3238'
+LOG:  duration: 1706.255 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '246', $2 = '17'
+LOG:  duration: 1860.804 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '2333', $2 = '262'
+LOG:  duration: 1671.229 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '3426', $2 = '5'
+LOG:  duration: 1683.139 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '1811', $2 = '245'
+LOG:  duration: 1672.029 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-4', $2 = '22'
+LOG:  duration: 1694.649 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-2159', $2 = '30'
+LOG:  duration: 1667.406 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '363', $2 = '26'
+LOG:  duration: 1708.213 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-677', $2 = '27'
+LOG:  duration: 1650.291 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '2647', $2 = '12'
+LOG:  duration: 1682.201 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '1200', $2 = '186'
+LOG:  duration: 1675.854 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '488', $2 = '21'
+LOG:  duration: 1709.006 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '4993', $2 = '7'
+LOG:  duration: 1653.538 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '221', $2 = '28', $3 = '2648776', $4 = '4662'
+LOG:  duration: 1682.045 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-3089', $2 = '30'
+LOG:  duration: 1654.229 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-1152', $2 = '28'
+LOG:  duration: 1656.910 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '3501', $2 = '5'
+LOG:  duration: 1673.491 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-4806', $2 = '21'
+LOG:  duration: 1732.253 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '2424', $2 = '262'
+LOG:  duration: 1653.587 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '144', $2 = '37', $3 = '739792', $4 = '2691'
+LOG:  duration: 1678.587 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '2426', $2 = '28'
+LOG:  duration: 1715.740 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-3708', $2 = '7'
+LOG:  duration: 1719.409 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '3686', $2 = '21'
+LOG:  duration: 1721.947 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-961', $2 = '6'
+LOG:  duration: 1724.059 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '2635', $2 = '352'
+LOG:  duration: 1717.171 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-4653', $2 = '28'
+LOG:  duration: 1685.048 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '1773', $2 = '7'
+LOG:  duration: 1674.231 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-604', $2 = '9'
+LOG:  duration: 1686.612 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '2798', $2 = '228'
+LOG:  duration: 1687.646 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-835', $2 = '191'
+LOG:  duration: 1732.657 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '2846', $2 = '7'
+LOG:  duration: 1712.340 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-2320', $2 = '28'
+LOG:  duration: 1858.162 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '1126', $2 = '30'
+LOG:  duration: 1836.522 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-2194', $2 = '59'
+LOG:  duration: 1819.394 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-2345', $2 = '30'
+LOG:  duration: 1761.139 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-4273', $2 = '28'
+LOG:  duration: 1822.345 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '4370', $2 = '149'
+LOG:  duration: 1691.391 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '3967', $2 = '30'
+LOG:  duration: 1709.760 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '4537', $2 = '28'
+LOG:  duration: 1711.829 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-3561', $2 = '6'
+LOG:  duration: 1830.849 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '2021', $2 = '30'
+LOG:  duration: 1891.519 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-2400', $2 = '190'
+LOG:  duration: 1758.073 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-2019', $2 = '22'
+ERROR:  no unpinned buffers available
+STATEMENT:  SELECT abalance FROM pgbench_accounts WHERE aid = $1;
+LOG:  duration: 1031.405 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-463', $2 = '26'
+LOG:  duration: 1109.143 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-4300', $2 = '16'
+LOG:  duration: 1296.102 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '3250', $2 = '23'
+LOG:  duration: 1038.166 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '2475', $2 = '26'
+LOG:  duration: 1140.206 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '3086', $2 = '23'
+LOG:  duration: 1124.331 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '3810', $2 = '26'
+LOG:  duration: 1592.689 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-4573', $2 = '26'
+LOG:  duration: 1474.921 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-3089', $2 = '378'
+LOG:  duration: 1658.240 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-1807', $2 = '323'
+LOG:  duration: 1930.540 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '373', $2 = '26'
+LOG:  duration: 1498.325 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-3873', $2 = '323'
+LOG:  duration: 1533.621 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '4795', $2 = '100'
+LOG:  duration: 1433.304 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '1627', $2 = '26'
+LOG:  duration: 1436.548 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '602', $2 = '100'
+LOG:  duration: 1002.710 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '4642', $2 = '100'
+LOG:  duration: 1780.285 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '2002', $2 = '26'
+LOG:  duration: 1647.802 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '4794', $2 = '325'
+LOG:  duration: 1763.543 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '1479', $2 = '325'
+LOG:  duration: 2354.640 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '2868', $2 = '26'
+LOG:  duration: 1719.504 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '4692', $2 = '275'
+LOG:  duration: 1660.338 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '4996', $2 = '275'
+LOG:  duration: 1652.417 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-1346', $2 = '325'
+LOG:  duration: 1633.656 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-4918', $2 = '221'
+LOG:  duration: 1910.730 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '1444', $2 = '26'
+LOG:  duration: 1570.888 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-3225', $2 = '325'
+LOG:  duration: 1700.922 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-4084', $2 = '275'
+LOG:  duration: 1611.934 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-4243', $2 = '282'
+LOG:  duration: 1328.527 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '4601', $2 = '221'
+LOG:  duration: 1399.003 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '4601', $2 = '275'
+LOG:  duration: 1280.500 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-4304', $2 = '325'
+LOG:  duration: 1112.254 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-3095', $2 = '282'
+LOG:  duration: 1210.865 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-4767', $2 = '26'
+LOG:  duration: 1158.196 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-2878', $2 = '26'
+LOG:  duration: 1079.190 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '2685', $2 = '160'
+LOG:  duration: 2293.570 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '4767', $2 = '26'
+LOG:  duration: 1881.465 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '3743', $2 = '385'
+LOG:  duration: 1136.985 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-1312', $2 = '26'
+LOG:  duration: 1576.268 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '1924', $2 = '385'
+LOG:  duration: 1161.741 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-686', $2 = '188'
+LOG:  duration: 1201.495 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '84', $2 = '385'
+LOG:  duration: 1555.353 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-1184', $2 = '26'
+LOG:  duration: 1354.989 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-3697', $2 = '57'
+LOG:  duration: 1669.610 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '1267', $2 = '26'
+LOG:  duration: 1120.831 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '1088', $2 = '49'
+LOG:  duration: 1418.259 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-4135', $2 = '57'
+LOG:  duration: 2194.939 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-2800', $2 = '26'
+LOG:  duration: 1122.752 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '2098', $2 = '49'
+LOG:  duration: 1015.827 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '1143', $2 = '57'
+LOG:  duration: 1983.339 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-4532', $2 = '46'
+LOG:  duration: 1073.616 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '3446', $2 = '57'
+LOG:  duration: 1251.283 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-2765', $2 = '57'
+LOG:  duration: 3402.306 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '1935', $2 = '26'
+LOG:  duration: 1983.793 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-811', $2 = '46'
+LOG:  duration: 2000.935 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-4921', $2 = '26'
+LOG:  duration: 3204.077 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-630', $2 = '198'
+LOG:  duration: 1942.702 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-2425', $2 = '46'
+LOG:  duration: 2056.503 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-2599', $2 = '46'
+LOG:  duration: 1959.968 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-4320', $2 = '237'
+LOG:  duration: 1049.547 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '1143', $2 = '26'
+LOG:  duration: 1714.810 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '2133', $2 = '26'
+LOG:  duration: 3070.618 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-3113', $2 = '198'
+LOG:  duration: 1680.016 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '4870', $2 = '26'
+LOG:  duration: 1001.715 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '4046', $2 = '26'
+LOG:  duration: 1690.281 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-1699', $2 = '46'
+LOG:  duration: 1466.045 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '789', $2 = '237'
+LOG:  duration: 2962.280 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-3597', $2 = '198'
+LOG:  duration: 1535.718 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '4642', $2 = '26'
+LOG:  duration: 1759.806 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-1054', $2 = '46'
+LOG:  duration: 1077.009 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '1398', $2 = '26'
+LOG:  duration: 1017.201 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-4161', $2 = '237'
+LOG:  duration: 1813.999 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '1361', $2 = '100'
+LOG:  duration: 2993.376 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-369', $2 = '198'
+LOG:  duration: 1273.182 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-4188', $2 = '100'
+LOG:  duration: 1250.375 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-2194', $2 = '100'
+LOG:  duration: 2928.874 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-3157', $2 = '198'
+LOG:  duration: 2286.582 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-4327', $2 = '100'
+LOG:  duration: 1218.268 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-86', $2 = '237'
+LOG:  duration: 2829.091 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-2016', $2 = '26'
+LOG:  duration: 1028.071 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '4126', $2 = '100'
+LOG:  duration: 2945.984 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-2678', $2 = '347'
+LOG:  duration: 1280.510 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-2506', $2 = '100'
+LOG:  duration: 2115.047 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-1256', $2 = '198'
+LOG:  duration: 2601.444 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-488', $2 = '26'
+LOG:  duration: 2040.275 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-3323', $2 = '347'
+LOG:  duration: 1518.328 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '3134', $2 = '26'
+LOG:  duration: 2375.287 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-4937', $2 = '198'
+LOG:  duration: 2589.395 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-4428', $2 = '88'
+LOG:  duration: 1479.964 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-3306', $2 = '36'
+LOG:  duration: 2376.857 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-3459', $2 = '26'
+LOG:  duration: 1301.778 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-3842', $2 = '36'
+LOG:  duration: 2326.424 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-1018', $2 = '198'
+LOG:  duration: 2635.376 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '2224', $2 = '88'
+LOG:  duration: 2067.305 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '500', $2 = '52'
+LOG:  duration: 1306.952 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '1733', $2 = '26'
+LOG:  duration: 1107.150 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-3515', $2 = '52'
+LOG:  duration: 1758.564 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '1870', $2 = '198'
+LOG:  duration: 1497.774 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '2586', $2 = '198'
+LOG:  duration: 1077.465 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-1770', $2 = '36'
+LOG:  duration: 1417.529 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-315', $2 = '198'
+LOG:  duration: 1716.096 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '3115', $2 = '52'
+LOG:  duration: 1367.537 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-412', $2 = '36'
+LOG:  duration: 1071.871 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '1309', $2 = '52'
+LOG:  duration: 1256.046 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-1033', $2 = '198'
+LOG:  duration: 1360.730 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-3010', $2 = '26'
+LOG:  duration: 1240.828 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '2164', $2 = '337'
+LOG:  duration: 1039.627 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '2134', $2 = '198'
+LOG:  duration: 1250.712 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '400', $2 = '52'
+LOG:  duration: 1262.937 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-3665', $2 = '337'
+LOG:  duration: 1051.056 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '3112', $2 = '52'
+LOG:  duration: 1084.316 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-3160', $2 = '337'
+LOG:  duration: 2775.908 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '2750', $2 = '88'
+LOG:  duration: 2758.093 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-4195', $2 = '88'
+LOG:  duration: 3920.620 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '4488', $2 = '198'
+LOG:  duration: 1004.370 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '4582', $2 = '88'
+LOG:  duration: 2076.197 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '4298', $2 = '88'
+LOG:  duration: 2147.654 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-3805', $2 = '88'
+LOG:  duration: 5416.488 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '4827', $2 = '198'
+LOG:  duration: 1099.076 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-494', $2 = '13'
+LOG:  duration: 1409.944 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-3307', $2 = '159'
+LOG:  duration: 1126.425 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-569', $2 = '13'
+LOG:  duration: 1022.341 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '1849', $2 = '13'
+LOG:  duration: 1235.374 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-4437', $2 = '361'
+LOG:  duration: 1076.117 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-3882', $2 = '13'
+LOG:  duration: 1022.658 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-324', $2 = '13'
+LOG:  duration: 3318.361 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '2960', $2 = '198'
+LOG:  duration: 1719.094 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '1649', $2 = '13'
+LOG:  duration: 1034.723 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-1813', $2 = '28'
+LOG:  duration: 1812.452 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '905', $2 = '198'
+LOG:  duration: 1761.189 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-2106', $2 = '207'
+LOG:  duration: 1242.490 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-38', $2 = '13'
+LOG:  duration: 1044.944 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-656', $2 = '8'
+LOG:  duration: 1199.476 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-106', $2 = '13'
+LOG:  duration: 1186.254 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '1971', $2 = '356'
+LOG:  duration: 1127.071 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '4320', $2 = '8'
+LOG:  duration: 1535.570 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-804', $2 = '207'
+LOG:  duration: 1593.028 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '3677', $2 = '207'
+LOG:  duration: 1425.668 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '2499', $2 = '207'
+LOG:  duration: 1147.455 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-2417', $2 = '207'
+LOG:  duration: 2003.654 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '4250', $2 = '207'
+LOG:  duration: 1011.858 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '3815', $2 = '207'
+LOG:  duration: 1122.127 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-1986', $2 = '299'
+ERROR:  no unpinned buffers available
+STATEMENT:  UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+ERROR:  no unpinned buffers available
+STATEMENT:  UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+ERROR:  no unpinned buffers available
+STATEMENT:  UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+ERROR:  no unpinned buffers available
+STATEMENT:  UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+ERROR:  no unpinned buffers available
+STATEMENT:  UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+ERROR:  no unpinned buffers available
+STATEMENT:  UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+ERROR:  no unpinned buffers available
+STATEMENT:  UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+ERROR:  no unpinned buffers available
+STATEMENT:  UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+ERROR:  no unpinned buffers available
+STATEMENT:  UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+ERROR:  no unpinned buffers available
+STATEMENT:  UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+ERROR:  no unpinned buffers available
+STATEMENT:  UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+ERROR:  no unpinned buffers available
+STATEMENT:  INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+ERROR:  no unpinned buffers available
+STATEMENT:  UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+ERROR:  no unpinned buffers available
+STATEMENT:  UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+ERROR:  no unpinned buffers available
+STATEMENT:  UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+ERROR:  no unpinned buffers available
+STATEMENT:  UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+ERROR:  no unpinned buffers available
+STATEMENT:  UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+LOG:  duration: 1165.057 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '3029', $2 = '3'
+LOG:  duration: 1289.519 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '4439', $2 = '3'
+LOG:  duration: 1021.630 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-740', $2 = '346'
+LOG:  duration: 1071.753 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '2890', $2 = '28'
+LOG:  duration: 1090.110 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-562', $2 = '28'
+LOG:  duration: 1148.315 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '4826', $2 = '42'
+LOG:  duration: 1044.283 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-1967', $2 = '324'
+LOG:  duration: 1235.859 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '82', $2 = '42'
+LOG:  duration: 1391.292 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-1007', $2 = '28'
+LOG:  duration: 1462.101 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '2622', $2 = '346'
+LOG:  duration: 1102.440 ms  statement: SELECT abalance FROM pgbench_accounts WHERE aid = $1;
+DETAIL:  parameters: $1 = '2591928'
+LOG:  duration: 1103.098 ms  statement: END;
+LOG:  duration: 1100.320 ms  statement: SELECT abalance FROM pgbench_accounts WHERE aid = $1;
+DETAIL:  parameters: $1 = '449948'
+LOG:  duration: 1104.593 ms  statement: END;
+LOG:  duration: 1103.857 ms  statement: END;
+LOG:  duration: 1099.963 ms  statement: SELECT abalance FROM pgbench_accounts WHERE aid = $1;
+DETAIL:  parameters: $1 = '464837'
+LOG:  duration: 1142.916 ms  statement: END;
+LOG:  duration: 1105.875 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '4331', $2 = '1109378'
+LOG:  duration: 1104.004 ms  statement: END;
+LOG:  duration: 1108.005 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '-503', $2 = '543671'
+LOG:  duration: 1155.220 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '1255', $2 = '39'
+LOG:  duration: 1157.443 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '361', $2 = '27', $3 = '2326731', $4 = '-3447'
+LOG:  duration: 1140.382 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '230', $2 = '30', $3 = '3188938', $4 = '-2869'
+LOG:  duration: 1105.902 ms  statement: SELECT abalance FROM pgbench_accounts WHERE aid = $1;
+DETAIL:  parameters: $1 = '645056'
+LOG:  duration: 1140.744 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '3132', $2 = '7'
+LOG:  duration: 1145.413 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-3279', $2 = '262'
+LOG:  duration: 1146.455 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-4140', $2 = '2'
+LOG:  duration: 1141.940 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '2188', $2 = '311'
+LOG:  duration: 1110.656 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-2412', $2 = '291'
+LOG:  duration: 1162.133 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '1196', $2 = '1483185'
+LOG:  duration: 1143.134 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '226', $2 = '24', $3 = '814171', $4 = '3846'
+LOG:  duration: 1111.876 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-613', $2 = '306'
+LOG:  duration: 1110.771 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '-3584', $2 = '556901'
+LOG:  duration: 1146.703 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '170', $2 = '22', $3 = '3420227', $4 = '1325'
+LOG:  duration: 1255.692 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '2988', $2 = '392'
+LOG:  duration: 1155.660 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '799', $2 = '3138401'
+LOG:  duration: 1111.958 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '247', $2 = '32', $3 = '771341', $4 = '615'
+LOG:  duration: 1118.794 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '1340', $2 = '131352'
+LOG:  duration: 1147.738 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '148', $2 = '4', $3 = '3574178', $4 = '2399'
+LOG:  duration: 1188.092 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-2741', $2 = '48'
+LOG:  duration: 1117.937 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '-856', $2 = '1865806'
+LOG:  duration: 1169.894 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '260', $2 = '23', $3 = '1944185', $4 = '40'
+LOG:  duration: 1151.478 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '371', $2 = '9', $3 = '3157976', $4 = '4617'
+LOG:  duration: 1222.943 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '320', $2 = '21', $3 = '291023', $4 = '3452'
+LOG:  duration: 1194.995 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-4892', $2 = '35'
+LOG:  duration: 1120.813 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-3337', $2 = '275'
+LOG:  duration: 1161.199 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '4800', $2 = '2804554'
+LOG:  duration: 1158.605 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '2769', $2 = '2295044'
+LOG:  duration: 1219.931 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '498', $2 = '226'
+LOG:  duration: 1168.984 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-3374', $2 = '361'
+LOG:  duration: 1127.325 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '-510', $2 = '107265'
+LOG:  duration: 1166.872 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '2060', $2 = '28'
+LOG:  duration: 1126.881 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '-1605', $2 = '2128806'
+LOG:  duration: 1237.544 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '2287', $2 = '26'
+LOG:  duration: 1198.519 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '52', $2 = '10', $3 = '444614', $4 = '2592'
+LOG:  duration: 1200.713 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-4599', $2 = '6'
+LOG:  duration: 1129.307 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '182', $2 = '5', $3 = '561116', $4 = '4037'
+LOG:  duration: 1126.493 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '4683', $2 = '20'
+LOG:  duration: 1133.336 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '25', $2 = '33', $3 = '2236631', $4 = '-2063'
+LOG:  duration: 1134.479 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '-271', $2 = '1133924'
+LOG:  duration: 1247.258 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '3179', $2 = '18'
+LOG:  duration: 1173.798 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '3861', $2 = '22'
+LOG:  duration: 1171.976 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-2187', $2 = '13'
+LOG:  duration: 1197.345 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '1175', $2 = '831367'
+LOG:  duration: 1170.685 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '71', $2 = '37', $3 = '324328', $4 = '-4976'
+LOG:  duration: 1168.475 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '3438', $2 = '3973554'
+LOG:  duration: 1137.782 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '-4508', $2 = '3778303'
+LOG:  duration: 1135.730 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '-3611', $2 = '1788171'
+LOG:  duration: 1217.435 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '1068', $2 = '32'
+LOG:  duration: 1170.938 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '156', $2 = '1', $3 = '2312171', $4 = '-2347'
+LOG:  duration: 1206.054 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-1182', $2 = '15'
+LOG:  duration: 1185.070 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '3187', $2 = '1307341'
+LOG:  duration: 1406.845 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '3582', $2 = '24'
+LOG:  duration: 1134.817 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-874', $2 = '29'
+LOG:  duration: 1178.570 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '1422', $2 = '1083100'
+LOG:  duration: 1188.705 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-2019', $2 = '18'
+LOG:  duration: 1210.363 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '273', $2 = '5'
+LOG:  duration: 1197.902 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-1630', $2 = '37'
+LOG:  duration: 1195.620 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '2711', $2 = '71'
+LOG:  duration: 1349.406 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-1749', $2 = '32'
+LOG:  duration: 1215.962 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '2355', $2 = '6'
+LOG:  duration: 1191.037 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-234', $2 = '18'
+LOG:  duration: 1198.201 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '4069', $2 = '346'
+LOG:  duration: 1328.843 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '1502', $2 = '26'
+LOG:  duration: 1221.087 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-1891', $2 = '6'
+LOG:  duration: 1149.800 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-4529', $2 = '22'
+LOG:  duration: 1194.694 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '3114', $2 = '2683482'
+LOG:  duration: 1147.755 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '282', $2 = '36', $3 = '1300762', $4 = '256'
+LOG:  duration: 1208.673 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '122', $2 = '15'
+LOG:  duration: 1318.402 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '3517', $2 = '9'
+LOG:  duration: 1224.657 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '3985', $2 = '16'
+LOG:  duration: 1205.436 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '2963', $2 = '739106'
+LOG:  duration: 1241.799 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '4278', $2 = '320'
+LOG:  duration: 1301.033 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '4653', $2 = '3'
+LOG:  duration: 1252.073 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '1498', $2 = '393'
+LOG:  duration: 1189.678 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '292', $2 = '31', $3 = '3029292', $4 = '2991'
+LOG:  duration: 1226.566 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '4822', $2 = '39'
+LOG:  duration: 1352.566 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '424', $2 = '24'
+LOG:  duration: 1394.941 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-4809', $2 = '247'
+LOG:  duration: 1236.503 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-1120', $2 = '27'
+LOG:  duration: 1370.543 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '2525', $2 = '233'
+LOG:  duration: 1298.098 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '2891', $2 = '31'
+LOG:  duration: 1270.117 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '3919', $2 = '6'
+LOG:  duration: 1243.762 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-4464', $2 = '214'
+LOG:  duration: 1261.060 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '4977', $2 = '10'
+LOG:  duration: 1199.856 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '4181', $2 = '282'
+LOG:  duration: 1409.482 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-1989', $2 = '6'
+LOG:  duration: 1367.332 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-1113', $2 = '19'
+LOG:  duration: 1340.470 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '2604', $2 = '27'
+LOG:  duration: 1332.364 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-4001', $2 = '200'
+LOG:  duration: 1270.712 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '3753', $2 = '10'
+LOG:  duration: 1292.577 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-1889', $2 = '308'
+LOG:  duration: 1325.291 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-2383', $2 = '6'
+LOG:  duration: 1246.797 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '829', $2 = '1'
+LOG:  duration: 1195.304 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '272', $2 = '38', $3 = '3697414', $4 = '-1513'
+LOG:  duration: 1202.646 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '3836', $2 = '39'
+LOG:  duration: 1216.229 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '4595', $2 = '16'
+LOG:  duration: 1330.807 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-1503', $2 = '24'
+LOG:  duration: 1347.148 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-137', $2 = '6'
+LOG:  duration: 1373.852 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '4438', $2 = '6'
+LOG:  duration: 1413.824 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-557', $2 = '27'
+LOG:  duration: 1303.267 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '3002', $2 = '36'
+LOG:  duration: 1258.195 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-426', $2 = '10'
+LOG:  duration: 1285.735 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '1836', $2 = '1'
+LOG:  duration: 1256.443 ms  statement: INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP);
+DETAIL:  parameters: $1 = '248', $2 = '17', $3 = '94990', $4 = '1192'
+LOG:  duration: 1303.883 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-3191', $2 = '126'
+LOG:  duration: 1403.152 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-2796', $2 = '3'
+LOG:  duration: 1300.918 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '-1202', $2 = '126'
+LOG:  duration: 1346.739 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '4377', $2 = '218'
+LOG:  duration: 1430.704 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-1339', $2 = '32'
+LOG:  duration: 1270.921 ms  statement: UPDATE pgbench_accounts SET abalance = abalance + $1 WHERE aid = $2;
+DETAIL:  parameters: $1 = '3936', $2 = '2382142'
+LOG:  duration: 1415.869 ms  statement: UPDATE pgbench_tellers SET tbalance = tbalance + $1 WHERE tid = $2;
+DETAIL:  parameters: $1 = '4094', $2 = '279'
+LOG:  duration: 1282.369 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '2436', $2 = '27'
+LOG:  duration: 1342.094 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-817', $2 = '15'
+LOG:  duration: 1318.463 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-2675', $2 = '10'
+LOG:  duration: 1432.193 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-2852', $2 = '3'
+LOG:  duration: 1597.699 ms  statement: UPDATE pgbench_branches SET bbalance = bbalance + $1 WHERE bid = $2;
+DETAIL:  parameters: $1 = '-4650', $2 = '3'
+LOG:  duration: 15011.615 ms  statement: SELECT schemaname, tablename
+	  FROM pg_tables, pg_sleep(15)
+	  WHERE schemaname <> 'pg_catalog';
+LOG:  duration: 10012.477 ms  statement: SELECT schemaname, tablename
+	  FROM pg_tables, pg_sleep(10)
+	  WHERE schemaname <> 'pg_catalog';
+LOG:  duration: 10012.005 ms  statement: SELECT schemaname, tablename
+	  FROM pg_tables, pg_sleep(10)
+	  WHERE schemaname <> 'pg_catalog';
+LOG:  duration: 10004.559 ms  statement: SELECT schemaname, tablename FROM pg_tables, pg_sleep(10) WHERE schemaname <> 'pg_catalog';

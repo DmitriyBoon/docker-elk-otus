@@ -1,0 +1,31 @@
+filebeat.prospectors:
+- input_type: log
+  paths:
+    - /tmp/elk-example.log
+  fields:
+    app_name: elk-sample-app
+  fields_under_root: true
+  multiline.pattern: '^[[:space:]]'
+  multiline.negate: false
+  multiline.match: after
+
+- input_type: log
+  paths:
+    - /tmp/pg.log
+  fields:
+    app_name: postgres
+  fields_under_root: true
+  multiline.pattern: '^[[:space:]]'
+  multiline.negate: false
+  multiline.match: after
+
+#output.elasticsearch:
+#  hosts: ["http://172.18.0.3:9200"]
+#  username: "elastic"
+#  password: "changeme"
+#  index: "logstash-training"
+
+#setup.template.name: "logstash-training"
+#setup.template.pattern: "logstash-training"
+output.logstash:
+  hosts: logstash-mutator:5044
